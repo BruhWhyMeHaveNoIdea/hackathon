@@ -2,61 +2,40 @@
 sequenceDiagram
     participant Front as Frontend (HTML/JS + Yandex Maps)
     participant API as Backend API (Django)
-    participant Parser as Parsers (Python)
+    participant Parser as Parsers (Python Scrapers)
     participant Geo as Yandex Geocoder API
     participant DB as PostgreSQL
 
+    %% === Старт работы ===
+    Front ->> Front: Render Yandex Map
 
-    %% === Запуск и загрузка карты ===
-    Front->>API: GET /api/objects
-    API->>DB: SELECT * FROM real_estate_objects
-    DB-->>API: list of objects with coordinates
-    API-->>Front: JSON {objects}
-    Front->>Front: render markers on Yandex Map
+    %% === Пользователь вводит требования банка ===
+    Front ->> API: /request {filters}
 
+    API ->> Parser: Trigger parsing task (async or sync)
+    Parser ->> Parser: Parse Avito, Cian, DomKlik
 
-    %% === Фильтрация на странице ===
-    Front->>API: GET /api/objects?price_min=...&area_min=...
-    API->>DB: SELECT ... WHERE filters
-    DB-->>API: filtered objects
-    API-->>Front: JSON filtered objects
-    Front->>Front: update map markers
+    %% === Геокодирование ===
+    Parser ->> Geo: GET /geocode?address=...
+    Geo -->> Parser: {lat, lon}
 
+    %% === Сохранение ===
+    Parser ->> DB: INSERT/UPDATE real_estate_objects
+    Parser ->> DB: INSERT photos
+    Parser ->> DB: INSERT parsing_logs
 
-    %% === Старт парсинга объектов ===
-    Front->>API: POST /api/parse/run
-    API->>Parser: trigger parsing script
-    Parser->>Parser: scrape Avito, Cian, DomKlik
-    Parser->>Geo: GET /geocode?address=...
-    Geo-->>Parser: {lat, lon}
-    Parser->>DB: INSERT/UPDATE normalized objects
-    DB-->>Parser: OK
-    Parser-->>API: {status: "completed", newObjects: N}
-    API-->>Front: {success: true}
+    %% === API запрашивает данные для фронта ===
+    API ->> DB: SELECT * FROM real_estate_objects WHERE filters
+    DB -->> API: ResultSet
 
+    %% === Ответ на фронт ===
+    API -->> Front: JSON {objects: [...]}
 
-    %% === Получение детальной информации по объекту ===
-    Front->>API: GET /api/objects/{id}
-    API->>DB: SELECT * FROM real_estate_objects WHERE id=?
-    DB-->>API: full object
-    API-->>Front: {id, address, price, area, coords, photos, link}
+    %% === Отображение на карте ===
+    Front ->> Front: Render markers on Yandex Map
 
+    %% === Отчистка БД после закрытия запроса ===
+    Front ->> API: /clear_db
+    API ->> DB: DELETE real_estate_objects, photos
 
-    %% === Добавление объекта вручную (опционально) ===
-    Front->>API: POST /api/objects {address, price, area}
-    API->>Geo: GET /geocode?address=...
-    Geo-->>API: coords
-    API->>DB: INSERT new object
-    DB-->>API: object_id
-    API-->>Front: {objectId}
-
-
-    %% === Обновление данных по объектам ===
-    Front->>API: POST /api/parse/update
-    API->>Parser: start incremental update
-    Parser->>Parser: check updated listings
-    Parser->>DB: UPDATE real_estate_objects SET ...
-    DB-->>Parser: OK
-    Parser-->>API: done
-    API-->>Front: 200 {updated: true}
 ```
