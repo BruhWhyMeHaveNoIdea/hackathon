@@ -22,11 +22,10 @@ sequenceDiagram
     AI ->> AI: Map on fixed JSON
     AI ->> API: return JSON
     API ->> API: Check for fixed fields
-    API ->> DB: Take information from DB, grouped by AI JSON
 
 
     %% === API запрашивает данные для фронта ===
-    API ->> DB: SELECT * FROM real_estate_objects WHERE filters
+    API ->> DB: SELECT * FROM real_estate_objects WHERE filters # Take information from DB, grouped by AI JSON
     DB -->> API: ResultSet
 
     %% === Ответ на фронт ===
