@@ -21,7 +21,7 @@ sequenceDiagram
     AI ->> AI: Generate NLU inter
     AI ->> AI: Map on fixed JSON
     AI ->> API: return JSON
-    API ->> API: Check for fixed fields
+    API ->> API: Check filters for fixed fields
 
 
     %% === API запрашивает данные для фронта ===
