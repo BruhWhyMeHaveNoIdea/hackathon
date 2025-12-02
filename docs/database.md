@@ -37,12 +37,4 @@ erDiagram
         timestamp finished_at "Время завершения"
         text error_message "Сообщение об ошибке (если есть)"
     }
-
-    RAW_LISTINGS {
-        uuid raw_id PK "Уникальный ID сырой записи"
-        varchar(255) source "Источник данных"
-        varchar(255) source_id "ID объявления в источнике"
-        jsonb raw_data "Сырой JSON/HTML из парсинга"
-        timestamp fetched_at "Когда были получены сырые данные"
-    }
 ```
