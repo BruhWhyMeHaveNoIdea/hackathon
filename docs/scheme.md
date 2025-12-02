@@ -34,8 +34,4 @@ sequenceDiagram
     %% === Отображение на карте ===
     Front ->> Front: Render markers on Yandex Map
 
-    %% === Отчистка БД после закрытия запроса ===
-    Front ->> API: /clear_db
-    API ->> DB: DELETE real_estate_objects, photos
-
 ```
