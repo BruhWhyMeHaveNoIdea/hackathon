@@ -22,13 +22,13 @@ erDiagram
     }
 
     PHOTOS {
-        uuid photo_id PK "Уникальный ID фотографии"
+        uuid id PK "Уникальный ID фотографии"
         uuid object_id FK "ID объекта, которому принадлежит фотография"
         text url "Ссылка на фотографию"
     }
 
     PARSING_LOGS {
-        uuid log_id PK "Уникальный ID записи лога"
+        uuid id PK "Уникальный ID записи лога"
         varchar(255) source "Источник: avito, cian, domklik"
         varchar(50) status "success / error"
         int new_items "Количество новых объектов"
