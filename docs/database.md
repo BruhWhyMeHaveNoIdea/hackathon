@@ -12,7 +12,7 @@ erDiagram
         varchar(255) address "Адрес объекта"
         float latitude "Координата широты"
         float longitude "Координата долготы"
-        int price "Цена"
+        float price "Цена"
         float area "Площадь (кв. м)"
         int floor "Этаж"
         int floors_total "Всего этажей в здании"
