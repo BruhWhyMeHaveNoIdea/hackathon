@@ -6,7 +6,7 @@ erDiagram
     REAL_ESTATE_OBJECTS {
         uuid id PK "Уникальный ID объекта"
         varchar(255) source "Источник: avito, cian, domklik"
-        varchar(255) source_id "ID объекта в источнике (для обновлений)"
+        varchar(255) photo_id "ID объекта в фотографиях (для обновлений)"
         varchar(255) title "Название или заголовок объявления"
         text description "Подробное описание объекта"
         varchar(255) address "Адрес объекта"
