@@ -2,17 +2,18 @@
 erDiagram
 
     REAL_ESTATE_OBJECTS ||--o{ PHOTOS : "имеет фотографии"
+    REAL_ESTATE_OBJECTS ||--o{ ESTATETYPES : "определяет тип недвижимости"
 
     REAL_ESTATE_OBJECTS {
         uuid id PK "Уникальный ID объекта"
         varchar(255) source "Источник: avito, cian, domklik"
-        varchar(255) source_id "ID объекта в источнике (для обновлений)"
+        varchar(255) photo_id "ID объекта в фотографиях (для обновлений)"
         varchar(255) title "Название или заголовок объявления"
         text description "Подробное описание объекта"
         varchar(255) address "Адрес объекта"
         float latitude "Координата широты"
         float longitude "Координата долготы"
-        int price "Цена"
+        float price "Цена"
         float area "Площадь (кв. м)"
         int floor "Этаж"
         int floors_total "Всего этажей в здании"
@@ -22,13 +23,17 @@ erDiagram
     }
 
     PHOTOS {
-        uuid photo_id PK "Уникальный ID фотографии"
-        uuid object_id FK "ID объекта, которому принадлежит фотография"
+        uuid id PK "Уникальный ID фотографии"
         text url "Ссылка на фотографию"
     }
 
+    ESTATETYPES {
+        uuid id PK "ID Типа недвижимости"
+        uuid object_id FK "Название типа недвижимости"
+    }
+
     PARSING_LOGS {
-        uuid log_id PK "Уникальный ID записи лога"
+        uuid id PK "Уникальный ID записи лога"
         varchar(255) source "Источник: avito, cian, domklik"
         varchar(50) status "success / error"
         int new_items "Количество новых объектов"
