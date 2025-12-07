@@ -2,6 +2,7 @@
 erDiagram
 
     REAL_ESTATE_OBJECTS ||--o{ PHOTOS : "имеет фотографии"
+    REAL_ESTATE_OBJECTS ||--o{ ESTATETYPES : "определяет тип недвижимости"
 
     REAL_ESTATE_OBJECTS {
         uuid id PK "Уникальный ID объекта"
@@ -23,8 +24,12 @@ erDiagram
 
     PHOTOS {
         uuid id PK "Уникальный ID фотографии"
-        uuid object_id FK "ID объекта, которому принадлежит фотография"
         text url "Ссылка на фотографию"
+    }
+
+    ESTATETYPES {
+        uuid id PK "ID Типа недвижимости"
+        uuid object_id FK "Название типа недвижимости"
     }
 
     PARSING_LOGS {
