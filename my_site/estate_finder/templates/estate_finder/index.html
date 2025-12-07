@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Поиск офисов | Сбербанк</title>
+        <link rel="stylesheet" href="{% static 'estate_finder/css/main_page.css' %}">
+        <script src="https://api-maps.yandex.ru/2.1/?apikey=b9a68819-d901-4c4c-9423-67ea39f3bf56&lang=ru_RU" type="text/javascript"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </head>
+    <body>
+        <div class="base_container">
+
+            <!--Сайд-меню с фильтром и поиском-->
+            <aside class="sidebar">
+                <div class="header_container">
+                    <div class="logo">
+                        <img class=""
+                        src="{% static 'estate_finder/images/logo.png' %}"
+                        alt="Сбербанк"
+                        width="40"
+                        height="40">
+                        <h1>Estate Finder</h1>
+                    </div>
+                </div>
+
+                <div class="request_container">
+                    <h2><i class="fas fa-comment-alt"></i> Что вы хотите?</h2>
+                    <textarea placeholder="Опишите требования к помещению..."></textarea>
+                    <button class="btn analyze-btn">
+                        <i class="fa-solid fa-magnifying-glass"></i> Начать поиск
+                    </button>
+                </div>
+
+                <div class="filters_container">
+                    <h2><i class="fas fa-filter"></i> Быстрые фильтры</h2>
+                    <div class="filters_grid">
+                        <!--Фильтры быстрые для поиска-->
+                    </div>
+                </div>
+            </aside>
+
+            <!--Основная часть с картой / результатами поиска-->
+            <div class="main">
+                <div class="map_container">
+                    <div id="map"></div>
+                    <div class="controls">
+                        <button class="map_btn" id="zoomIn"><i class="fas fa-search-plus"></i></button>
+                        <button class="map_btn" id="zoomOut"><i class="fas fa-search-minus"></i></button>
+                    </div>
+                </div>
+                <div class="results_container">
+                    <div class="results_list">
+                        <h3>Найденные обьекты <span class="found_count">0</span></h3>
+                        <div class="found_objects">
+                            <!--Обьекты тут-->
+                        </div>
+                    </div>
+                    <div class="details">
+                        <p>Выберите недвижимость для просмотра деталей</p>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <script src="{% static 'estate_finder/js/data.js' %}"></script>
+        <script src="{% static 'estate_finder/js/map.js' %}"></script>
+        <script src="{% static 'estate_finder/js/main.js' %}"></script>
+    </body>
+</html>

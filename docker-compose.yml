@@ -1,0 +1,45 @@
+services:
+  postgres:
+    image: postgres:alpine
+    container_name: postgres_database
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      TZ: ${TZ}
+    ports:
+      - "${DB_PORT}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d mydb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+  django:
+    build: .
+    container_name: django
+    working_dir: /project/my_site
+    volumes:
+      - ./my_site:/project/my_site
+    command:
+      sh -c "python manage.py migrate --noinput &&
+             python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgres://${DB_USER:-admin}:${DB_PASSWORD:-mypassword}@postgres:5432/${DB_NAME:-mydb}
+      - SECRET_KEY=${SECRET_KEY:-dev-secret-key-change-me}
+      - DEBUG=${DEBUG:-True}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-localhost,127.0.0.1,0.0.0.0}
+    env_file:
+      - ./.env
+
+volumes:
+  postgres_data:
