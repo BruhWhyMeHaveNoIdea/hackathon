@@ -29,7 +29,7 @@ erDiagram
 
     ESTATETYPES {
         uuid id PK "ID Типа недвижимости"
-        uuid object_id FK "Название типа недвижимости"
+        uuid object_type FK "Название типа недвижимости"
     }
 
     PARSING_LOGS {
